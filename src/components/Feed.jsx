@@ -6,11 +6,17 @@ import { fetchFromAPI } from "../utils/fetchFromAPI";
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
   const [videos, setVideos] = useState([]);
-  // useEffect(() => {
-  //   fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) =>
-  //     setVideos(data?.items)
-  //   );
-  // }, [selectedCategory]);
+  useEffect(() => {
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) => {
+      let filteredVideos = data?.items.filter(
+        (item) => item.id.videoId || item.id.channelId
+      );
+      console.log(data?.items);
+      console.log(filteredVideos);
+      setVideos(filteredVideos);
+    });
+  }, [selectedCategory]);
+
   return (
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
       <Box
